@@ -62,7 +62,7 @@ def process_coins():
         print(f"Inserted coin amount: {total}.")
         total += int(input("How many dimes?: ")) * 0.1
         print(f"Inserted coin amount: {total}.")
-        total += int(input("How many cents?: ")) * 0.05
+        total += int(input("How many nickels?: ")) * 0.05
         print(f"Inserted coin amount: {total}.")
         total += int(input("How many pennies?: ")) * 0.01
         print(f"Inserted coin amount: {total}.")
