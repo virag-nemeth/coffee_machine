@@ -32,10 +32,17 @@ resources = {
 
 profit = 0
 
+# Define the maximum capacities
+MAX_CAPACITY = {
+    "water": 1000,  # Maximum 1000 ml of water
+    "milk": 800,   # Maximum 800 ml of milk
+    "coffee": 500  # Maximum 500 g of coffe
+}
+
 def report(resources):
     print(f"Water: {resources['water']}ml \nMilk: {resources['milk']}ml \nCoffee: {resources['coffee']}g \nMoney: ${profit}")
 
-# TODO - 2 Return True when order can be made, False if ingredients are insufficient
+
 def is_resource_sufficient(order_ingredients):
     """Return a list of insufficient ingredients."""
     insufficient_items = []
@@ -44,16 +51,15 @@ def is_resource_sufficient(order_ingredients):
             insufficient_items.append(item)
     return insufficient_items  # Return list of missing items
 
-def alternative_is_resource_sufficient(order_ingredients):
-    """Return True when order can be made, False if ingredients are insufficient"""
-    """Alternative code"""
-    for item in order_ingredients:
-        if order_ingredients[item] > resources[item]:
-            print(f"Sorry, there isn't enough {item}")
-            return False
-    return True
+# def alternative_is_resource_sufficient(order_ingredients):
+#     """Return True when order can be made, False if ingredients are insufficient"""
+#     """Alternative code"""
+#     for item in order_ingredients:
+#         if order_ingredients[item] > resources[item]:
+#             print(f"Sorry, there isn't enough {item}")
+#             return False
+#     return True
 
-# TODO 3 - Process the inserted coins and return the total
 def process_coins():
     """Returns the total calculated from coins inserted."""
     print("Please insert coins.")
@@ -72,7 +78,7 @@ def process_coins():
     return total
 
 
-# TODO 4 - return true when transaction is accepted and false if the money is insufficient
+
 def is_transaction_successful(money_received, drink_cost):
     """Return True when the payment is accepted, or False if money is insufficient."""
     if money_received >= drink_cost:
@@ -86,7 +92,7 @@ def is_transaction_successful(money_received, drink_cost):
         return False
 
 
-# TODO 5- make coffee and deduct the ingredients used
+
 def make_coffee(drink_name, order_ingredients):
     """Deduct the required ingredients from the resources."""
     for item in order_ingredients:
@@ -94,18 +100,29 @@ def make_coffee(drink_name, order_ingredients):
     print(f"Here is your {drink_name} ☕️. Enjoy!")
 
 def refill(resources):
-    """Refills the resources with the chosen amounts"""
+    """Refills the resources with the chosen amounts, but ensures not to exceed maximum capacity."""
     ingredient = input("Which ingredient would you like to refill? coffee/water/milk: ").lower()
 
     if ingredient in resources:
-        amount = int(input(f"How much {ingredient} would you like to add? "))
-        resources[ingredient] += amount
-        print("Updated resource levels:")
-        report(resources)
+        try:
+            amount = int(input(f"How much {ingredient} would you like to add? "))
+            # Check if the refill would exceed the maximum allowed capacity
+            if resources[ingredient] + amount > MAX_CAPACITY[ingredient]:
+                max_addable = MAX_CAPACITY[ingredient] - resources[ingredient]
+                print(f"Sorry, you can only add up to {max_addable} more {ingredient} (maximum capacity reached).")
+                amount = max_addable if max_addable > 0 else 0
+            
+            # Add the allowed amount to the resources
+            resources[ingredient] += amount
+            print("Updated resource levels:")
+            report(resources)
+
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
     else:
         print("Sorry, there is no such ingredient.")
 
-# TODO 1- ask the user for input - create the logic for turning off and for printing a report
+
 def coffee_machine(MENU, resources):
     machine_on = True
 
