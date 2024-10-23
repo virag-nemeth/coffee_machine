@@ -164,3 +164,5 @@ def coffee_machine(MENU, resources):
 
 coffee_machine(MENU,resources)
 
+# TODO - structure it using OOP 
+
